@@ -1,0 +1,62 @@
+class Nodo:
+    def __init__(self, valor):
+        self.valor = valor
+        self.izquierdo = None
+        self.derecho = None
+
+class ArbolBinario:
+    def __init__(self):
+        self.raiz = None
+
+    def insertar(self, valor):
+        if self.raiz is None:
+            self.raiz = Nodo(valor)
+        else:
+            self._insertar_recursivo(self.raiz, valor)
+
+    def _insertar_recursivo(self, nodo, valor):
+        if valor < nodo.valor:
+            if nodo.izquierdo is None:
+                nodo.izquierdo = Nodo(valor)
+            else:
+                self._insertar_recursivo(nodo.izquierdo, valor)
+        else:
+            if nodo.derecho is None:
+                nodo.derecho = Nodo(valor)
+            else:
+                self._insertar_recursivo(nodo.derecho, valor)
+
+    def recorrer_inorder(self):
+        return self._recorrer_inorder_recursivo(self.raiz)
+
+    def _recorrer_inorder_recursivo(self, nodo):
+        return (self._recorrer_inorder_recursivo(nodo.izquierdo) if nodo.izquierdo else []) + \
+               [nodo.valor] + \
+               (self._recorrer_inorder_recursivo(nodo.derecho) if nodo.derecho else [])
+
+    def recorrer_preorder(self):
+        return self._recorrer_preorder_recursivo(self.raiz)
+
+    def _recorrer_preorder_recursivo(self, nodo):
+        return [nodo.valor] + \
+               (self._recorrer_preorder_recursivo(nodo.izquierdo) if nodo.izquierdo else []) + \
+               (self._recorrer_preorder_recursivo(nodo.derecho) if nodo.derecho else [])
+
+    def recorrer_postorder(self):
+        return self._recorrer_postorder_recursivo(self.raiz)
+
+    def _recorrer_postorder_recursivo(self, nodo):
+        return (self._recorrer_postorder_recursivo(nodo.izquierdo) if nodo.izquierdo else []) + \
+               (self._recorrer_postorder_recursivo(nodo.derecho) if nodo.derecho else []) + \
+               [nodo.valor]
+
+# Ejemplo de uso
+arbol = ArbolBinario()
+elementos = [5, 3, 7, 2, 4, 6, 8]
+
+for elem in elementos:
+    arbol.insertar(elem)
+
+print("Recorrido Inorder:", arbol.recorrer_inorder())
+print("Recorrido Preorder:", arbol.recorrer_preorder())
+print("Recorrido Postorder:", arbol.recorrer_postorder())
